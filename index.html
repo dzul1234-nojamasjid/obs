@@ -93,9 +93,8 @@
             #menu-toggle { display: block; }
         }
 
-        /* KELAS KAWALAN BAHASA (TANPA !important) */
-        .hidden { display: none; }
-        span.hidden { display: none; }
+        /* KELAS KAWALAN BAHASA */
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -273,28 +272,21 @@
     </main>
 
     <script>
-        // Fungsi Tukar Bahasa (Versi Kemas Kini)
+        // Fungsi Tukar Bahasa (Versi Betul)
         function tukarBahasa(lang) {
-            // Ambil semua elemen yang ada kelas my-text dan en-text
             var myTexts = document.getElementsByClassName('my-text');
             var enTexts = document.getElementsByClassName('en-text');
 
-            // Jika pilih Melayu
             if (lang === 'my') {
-                // Tunjuk semua Melayu (buang kelas 'hidden')
                 for (var i = 0; i < myTexts.length; i++) {
                     myTexts[i].classList.remove('hidden');
                 }
-                // Sembunyikan semua Inggeris (tambah kelas 'hidden')
                 for (var i = 0; i < enTexts.length; i++) {
                     enTexts[i].classList.add('hidden');
                 }
-                // Kemas kini warna butang
                 document.getElementById('btn-my').classList.add('active');
                 document.getElementById('btn-en').classList.remove('active');
-            } 
-            // Jika pilih Inggeris
-            else {
+            } else {
                 for (var i = 0; i < enTexts.length; i++) {
                     enTexts[i].classList.remove('hidden');
                 }
@@ -338,7 +330,7 @@
             side.classList.toggle('open');
         };
 
-        // Set Bahasa Melayu sebagai default bila halaman dibuka
+        // Set Bahasa Melayu sebagai default
         window.onload = function() {
             tukarBahasa('my');
         };
