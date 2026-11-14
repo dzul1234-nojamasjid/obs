@@ -129,18 +129,12 @@
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            animation: fadeIn 0.4s ease;
             max-width: 900px;
             margin: 0 auto;
         }
 
         .content-section.active {
             display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         h1, h2, h3 { color: #ffffff; margin-bottom: 15px; }
@@ -205,10 +199,8 @@
 </head>
 <body>
 
-    <!-- MOBILE MENU BUTTON -->
     <button id="menu-toggle">☰</button>
 
-    <!-- SIDEBAR -->
     <nav id="sidebar">
         <div class="sidebar-header">
             <h2>OBS Pocket Guide</h2>
@@ -218,7 +210,6 @@
             </div>
         </div>
         
-        <!-- MENU ITEMS (Dual Language) -->
         <button class="menu-btn active" onclick="showSection('intro', this)">
             <span class="lang-my">1. Pengenalan & Asas</span>
             <span class="lang-en">1. Intro & Basics</span>
@@ -253,10 +244,8 @@
         </button>
     </nav>
 
-    <!-- MAIN CONTENT -->
     <main id="main-content">
 
-        <!-- TOPIK 1 -->
         <section id="intro" class="content-section active">
             <h1><span class="lang-my">1. Pengenalan & Asas OBS</span><span class="lang-en">1. Intro & OBS Basics</span></h1>
             
@@ -275,7 +264,6 @@
             </div>
         </section>
 
-        <!-- TOPIK 2 -->
         <section id="scene" class="content-section">
             <h1><span class="lang-my">2. Konsep Scene & Source</span><span class="lang-en">2. Scene & Source Concept</span></h1>
             
@@ -290,7 +278,6 @@
             </div>
         </section>
 
-        <!-- TOPIK 3 -->
         <section id="setup" class="content-section">
             <h1><span class="lang-my">3. Panduan Setup Asas</span><span class="lang-en">3. Basic Setup Checklist</span></h1>
             
@@ -303,7 +290,6 @@
             </ol>
         </section>
 
-        <!-- TOPIK 4 -->
         <section id="audio" class="content-section">
             <h1><span class="lang-my">4. Rahsia Audio & Mute</span><span class="lang-en">4. Audio & Mute Secrets</span></h1>
             
@@ -319,7 +305,6 @@
             </div>
         </section>
 
-        <!-- TOPIK 5 -->
         <section id="studio" class="content-section">
             <h1><span class="lang-my">5. Kuasai Studio Mode</span><span class="lang-en">5. Mastering Studio Mode</span></h1>
             
@@ -335,7 +320,6 @@
             </div>
         </section>
 
-        <!-- TOPIK 6 -->
         <section id="media" class="content-section">
             <h1><span class="lang-my">6. Masalah Sumber Media</span><span class="lang-en">6. Media Source Issues</span></h1>
             
@@ -352,7 +336,6 @@
             </ul>
         </section>
 
-        <!-- TOPIK 7 -->
         <section id="bug" class="content-section">
             <h1><span class="lang-my">7. Isu OBS Versi 33</span><span class="lang-en">7. OBS v33 Bug Issues</span></h1>
             
@@ -371,7 +354,6 @@
             </div>
         </section>
 
-        <!-- TOPIK 8 -->
         <section id="tips" class="content-section">
             <h1><span class="lang-my">8. Tips Bertugas</span><span class="lang-en">8. Duty Tips</span></h1>
             
@@ -390,69 +372,52 @@
     </main>
 
     <script>
-        // 1. LANGUAGE SWITCHING LOGIC
+        // Fungsi Tukar Bahasa (Diringkaskan supaya tiada konflik)
         function switchLang(lang) {
-            // Hide all language elements first
-            var allLangElements = document.querySelectorAll('.lang-my, .lang-en');
-            for (var i = 0; i < allLangElements.length; i++) {
-                allLangElements[i].style.display = 'none';
-            }
+            // Sembunyikan semua
+            document.querySelectorAll('.lang-my').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.lang-en').forEach(el => el.style.display = 'none');
 
-            // Show selected language
-            var selectedElements = document.querySelectorAll('.' + lang);
-            for (var i = 0; i < selectedElements.length; i++) {
-                if (selectedElements[i].tagName === 'SPAN') {
-                    selectedElements[i].style.display = 'inline';
+            // Tunjuk bahasa yang dipilih
+            document.querySelectorAll('.' + lang).forEach(el => {
+                if (el.tagName === 'SPAN') {
+                    el.style.display = 'inline';
                 } else {
-                    selectedElements[i].style.display = 'block';
+                    el.style.display = 'block';
                 }
-            }
+            });
 
-            // Update active button style
+            // Tukar warna butang
             document.getElementById('btn-my').classList.remove('active');
             document.getElementById('btn-en').classList.remove('active');
             document.getElementById('btn-' + lang).classList.add('active');
         }
 
-        // 2. NAVIGATION LOGIC
+        // Fungsi Navigasi Menu
         function showSection(sectionId, btnElement) {
-            // Hide all sections
-            var sections = document.querySelectorAll('.content-section');
-            for (var i = 0; i < sections.length; i++) {
-                sections[i].classList.remove('active');
-            }
+            // Sembunyikan semua section
+            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
 
-            // Show selected section
-            var targetSection = document.getElementById(sectionId);
-            if (targetSection) {
-                targetSection.classList.add('active');
-            }
+            // Tunjuk section dipilih
+            document.getElementById(sectionId).classList.add('active');
 
-            // Update active menu button
-            var buttons = document.querySelectorAll('.menu-btn');
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-            }
-            
-            if (btnElement) {
-                btnElement.classList.add('active');
-            }
+            // Tukar status butang menu
+            document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
 
-            // Close sidebar on mobile
+            // Tutup menu di telefon
             if (window.innerWidth <= 768) {
                 document.getElementById('sidebar').classList.remove('open');
             }
-            
-            // Scroll to top
             document.getElementById('main-content').scrollTop = 0;
         }
 
-        // 3. MOBILE SIDEBAR TOGGLE
+        // Butang Menu Telefon
         document.getElementById('menu-toggle').addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('open');
         });
 
-        // 4. INITIALIZE: Set default language to Malay on load
+        // Set Bahasa Melayu sebagai default bila halaman dibuka
         window.onload = function() {
             switchLang('my');
         };
