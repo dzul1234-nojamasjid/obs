@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fix Yellow Screen OBS | Betulkan Warna Kuning OBS</title>
+    <style>
+        /* --- TEMA DARK MODE --- */
+        :root {
+            --primary-color: #4da3ff; 
+            --bg-color: #121212; 
+            --text-color: #e0e0e0; 
+            --sidebar-bg: #1e1e1e; 
+            --card-bg: #1e1e1e; 
+            --border-color: #333;
+            --hover-bg: #2a2a2a;
+            --note-bg: #332b00;
+            --note-border: #ffc107;
+            --highlight-bg: #1e3a2a;
+            --highlight-border: #28a745;
+            --bug-bg: #3a1e1e;
+            --bug-border: #dc3545;
+            --toggle-bg: #333;
+            --step-bg: #2a2a2a;
+            --table-header-bg: #333;
+            --table-border: #555;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- MENU SISI --- */
+        #sidebar {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px 0;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header { padding: 0 20px 15px 20px; border-bottom: 2px solid var(--primary-color); margin-bottom: 15px; }
+        .sidebar-header h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 10px; }
+
+        /* BUTANG BAHASA */
+        .lang-switch { display: flex; background-color: var(--toggle-bg); border-radius: 20px; overflow: hidden; margin-top: 10px; }
+        .lang-switch button { flex: 1; padding: 8px 0; border: none; background: none; color: #888; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: 0.3s; }
+        .lang-switch button.active { background-color: var(--primary-color); color: #121212; }
+
+        /* BUTANG MENU */
+        .menu-btn { display: block; width: 100%; padding: 12px 20px; background: none; border: none; text-align: left; cursor: pointer; font-size: 0.95rem; color: #a0a0a0; border-left: 4px solid transparent; transition: 0.2s; }
+        .menu-btn:hover { background-color: var(--hover-bg); color: var(--text-color); }
+        .menu-btn.active { background-color: var(--hover-bg); color: var(--primary-color); border-left: 4px solid var(--primary-color); font-weight: bold; }
+
+        /* --- KANDUNGAN UTAMA --- */
+        #main-content { flex: 1; padding: 30px 40px; overflow-y: auto; scroll-behavior: smooth; }
+
+        .content-section { display: none; background-color: var(--card-bg); padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); max-width: 900px; margin: 0 auto; }
+        .content-section.active { display: block; }
+
+        h1, h2, h3 { color: #ffffff; margin-bottom: 15px; }
+        h1 { font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; color: var(--primary-color); }
+        h2 { font-size: 1.4rem; margin-top: 25px; color: var(--primary-color); }
+        h3 { font-size: 1.1rem; margin-top: 20px; color: #d0d0d0; }
+        p { line-height: 1.6; margin-bottom: 12px; }
+        strong { color: #ffffff; }
+        ul, ol { margin-bottom: 15px; padding-left: 25px; line-height: 1.6; }
+        li { margin-bottom: 8px; }
+        code { background-color: #333; padding: 2px 6px; border-radius: 4px; font-family: monospace; color: #ff9d9d; }
+
+        /* KOTAK NOTA */
+        .note, .highlight, .bug-warning { padding: 15px; margin: 20px 0; border-radius: 4px; font-size: 0.95rem; color: #f5f5f5; }
+        .note { background-color: var(--note-bg); border-left: 4px solid var(--note-border); }
+        .highlight { background-color: var(--highlight-bg); border-left: 4px solid var(--highlight-border); }
+        .bug-warning { background-color: var(--bug-bg); border-left: 4px solid var(--bug-border); }
+
+        /* KOTAK LANGKAH (STEP) */
+        .step-box { background-color: var(--step-bg); border: 1px solid var(--border-color); padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .step-number { display: inline-block; background-color: var(--primary-color); color: #121212; font-weight: bold; width: 30px; height: 30px; text-align: center; line-height: 30px; border-radius: 50%; margin-right: 10px; }
+        .step-title { font-size: 1.1rem; font-weight: bold; color: #ffffff; }
+
+        /* JADUAL */
+        .settings-table { width: 100%; border-collapse: collapse; margin-top: 15px; background-color: var(--step-bg); }
+        .settings-table th, .settings-table td { padding: 12px; border: 1px solid var(--table-border); text-align: left; }
+        .settings-table th { background-color: var(--table-header-bg); color: #ffffff; }
+
+        /* --- PAPARAN TELEFON --- */
+        #menu-toggle { display: none; position: fixed; bottom: 20px; right: 20px; z-index: 1000; background-color: var(--primary-color); color: #121212; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            #sidebar { position: fixed; z-index: 999; transform: translateX(-100%); height: 100vh; width: 85%; max-width: 300px; box-shadow: 2px 0 10px rgba(0,0,0,0.5); }
+            #sidebar.open { transform: translateX(0); }
+            #main-content { padding: 15px; height: 100vh; overflow-y: auto; }
+            .content-section { padding: 20px; margin-bottom: 20px; }
+            h1 { font-size: 1.5rem; } h2 { font-size: 1.2rem; } h3 { font-size: 1rem; }
+            #menu-toggle { display: block; }
+            .settings-table th, .settings-table td { padding: 8px; font-size: 0.9rem; }
+        }
+
+        /* KELAS KAWALAN BAHASA */
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <button id="menu-toggle">☰</button>
+
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h2>Fix Yellow Screen</h2>
+            <div class="lang-switch">
+                <button id="btn-my" class="active" onclick="tukarBahasa('my')">BM</button>
+                <button id="btn-en" onclick="tukarBahasa('en')">EN</button>
+            </div>
+        </div>
+        
+        <button class="menu-btn active" onclick="tukarSkrin('intro', this)">
+            <span class="my-text">Pengenalan</span>
+            <span class="en-text hidden">Introduction</span>
+        </button>
+        <button class="menu-btn" onclick="tukarSkrin('steps', this)">
+            <span class="my-text">Langkah Demi Langkah</span>
+            <span class="en-text hidden">Step by Step</span>
+        </button>
+        <button class="menu-btn" onclick="tukarSkrin('settings', this)">
+            <span class="my-text">Panduan Tetapan</span>
+            <span class="en-text hidden">Settings Guide</span>
+        </button>
+        <button class="menu-btn" onclick="tukarSkrin('tips', this)">
+            <span class="my-text">Tips Tambahan</span>
+            <span class="en-text hidden">Extra Tips</span>
+        </button>
+    </nav>
+
+    <main id="main-content">
+
+        <!-- PENGENALAN -->
+        <section id="intro" class="content-section active">
+            <h1>
+                <span class="my-text">Betulkan Warna Kuning (Yellowish) di OBS</span>
+                <span class="en-text hidden">Fix Yellowish Screen in OBS</span>
+            </h1>
+            
+            <p class="my-text">Masalah video nampak kuning atau pucat adalah perkara biasa di masjid kerana cahaya lampu kalimantang. Jangan risau, ia boleh dibetulkan dalam OBS tanpa perlu beli kamera baru!</p>
+            <p class="en-text hidden">Yellowish or pale video is common in mosques due to fluorescent lighting. Don't worry, it can be fixed in OBS without buying a new camera!</p>
+            
+            <div class="note">
+                <span class="my-text"><strong>Nota:</strong> Panduan ini menggunakan fungsi <strong>Filters > Color Correction</strong> dalam OBS.</span>
+                <span class="en-text hidden"><strong>Note:</strong> This guide uses the <strong>Filters > Color Correction</strong> function in OBS.</span>
+            </div>
+        </section>
+
+        <!-- LANGKAH DEMI LANGKAH -->
+        <section id="steps" class="content-section">
+            <h1><span class="my-text">Langkah Demi Langkah</span><span class="en-text hidden">Step by Step</span></h1>
+            
+            <div class="step-box">
+                <span class="step-number">1</span>
+                <span class="step-title"><span class="my-text">Pilih Sumber Kamera</span><span class="en-text hidden">Select Camera Source</span></span>
+                <p style="margin-top: 10px;">
+                    <span class="my-text">Di panel <strong>Sources</strong> (bawah kiri OBS), klik pada sumber <strong>Video Capture Device</strong> (kamera masjid Tuan).</span>
+                    <span class="en-text hidden">In the <strong>Sources</strong> panel (bottom left of OBS), click on your <strong>Video Capture Device</strong> source (mosque camera).</span>
+                </p>
+            </div>
+
+            <div class="step-box">
+                <span class="step-number">2</span>
+                <span class="step-title"><span class="my-text">Buka Menu Filters</span><span class="en-text hidden">Open Filters Menu</span></span>
+                <p style="margin-top: 10px;">
+                    <span class="my-text">Klik butang <strong>Filters</strong> di bahagian atas panel Sources (sebelah butang Properties).</span>
+                    <span class="en-text hidden">Click the <strong>Filters</strong> button at the top of the Sources panel (next to Properties).</span>
+                </p>
+            </div>
+
+            <div class="step-box">
+                <span class="step-number">3</span>
+                <span class="step-title"><span class="my-text">Tambah Color Correction</span><span class="en-text hidden">Add Color Correction</span></span>
+                <p style="margin-top: 10px;">
+                    <span class="my-text">Di tetingkap Filters, klik butang <code>+</code> di bawah kiri. Pilih <strong>Color Correction</strong> dari senarai.</span>
+                    <span class="en-text hidden">In the Filters window, click the <code>+</code> button at the bottom left. Select <strong>Color Correction</strong> from the list.</span>
+                </p>
+            </div>
+
+            <div class="step-box">
+                <span class="step-number">4</span>
+                <span class="step-title"><span class="my-text">Laraskan Warna</span><span class="en-text hidden">Adjust the Colors</span></span>
+                <p style="margin-top: 10px;">
+                    <span class="my-text">Sekarang Tuan akan nampak beberapa slider. Laraskan seperti panduan di bawah:</span>
+                    <span class="en-text hidden">Now you will see several sliders. Adjust them as below:</span>
+                </p>
+                <ul>
+                    <li><span class="my-text"><strong>Gamma:</strong> Turunkan sedikit (contoh: dari 1.0 ke 0.9) untuk kurangkan kecerahan melampau.</span><span class="en-text hidden"><strong>Gamma:</strong> Lower slightly (e.g., from 1.0 to 0.9) to reduce overexposure.</span></li>
+                    <li><span class="my-text"><strong>Saturation:</strong> Turunkan sedikit (contoh: dari 1.0 ke 0.8) untuk kurangkan warna kuning yang terlalu "terang".</span><span class="en-text hidden"><strong>Saturation:</strong> Lower slightly (e.g., from 1.0 to 0.8) to reduce the overly "bright" yellow.</span></li>
+                    <li><span class="my-text"><strong>Color Multiply:</strong> (Ini paling penting) Tambah warna <strong>Biru (Blue)</strong> atau <strong>Cyan</strong> sedikit untuk mengimbangi warna kuning. Klik pada kotak warna, pilih biru muda, dan naikkan sedikit.</span><span class="en-text hidden"><strong>Color Multiply:</strong> (Most important) Add a little <strong>Blue</strong> or <strong>Cyan</strong> to balance the yellow. Click the color box, select light blue, and increase slightly.</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- PANDUAN TETAPAN -->
+        <section id="settings" class="content-section">
+            <h1><span class="my-text">Panduan Tetapan (Contoh)</span><span class="en-text hidden">Settings Guide (Example)</span></h1>
+            
+            <p class="my-text">Berikut adalah tetapan yang biasa digunakan untuk membetulkan warna kuning di masjid. Tuan boleh cuba nilai ini dan laraskan mengikut kesesuaian.</p>
+            <p class="en-text hidden">These are common settings to fix yellow in mosques. You can try these values and adjust to your preference.</p>
+
+            <table class="settings-table">
+                <thead>
+                    <tr>
+                        <th><span class="my-text">Tetapan</span><span class="en-text hidden">Setting</span></th>
+                        <th><span class="my-text">Nilai Disyorkan</span><span class="en-text hidden">Recommended Value</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Gamma</strong></td>
+                        <td>0.80 - 0.90</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Saturation</strong></td>
+                        <td>0.70 - 0.90</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Brightness</strong></td>
+                        <td>0.00 (tidak ubah)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Contrast</strong></td>
+                        <td>1.00 - 1.10</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Color Multiply</strong></td>
+                        <td>Light Blue / Cyan</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight">
+                <span class="my-text"><strong>Tip:</strong> Jangan terus ubah nilai. Buat secara perlahan dan tengok kesan pada skrin OBS.</span>
+                <span class="en-text hidden"><strong>Tip:</strong> Don't change values abruptly. Do it slowly and observe the effect on the OBS screen.</span>
+            </div>
+        </section>
+
+        <!-- TIPS TAMBAHAN -->
+        <section id="tips" class="content-section">
+            <h1><span class="my-text">Tips Tambahan</span><span class="en-text hidden">Extra Tips</span></h1>
+            
+            <ul>
+                <li><span class="my-text"><strong>White Balance Kamera:</strong> Jika kamera Tuan ada tetapan White Balance (WB), cuba tukar dari Auto ke Manual dan pilih mod "Fluorescent" atau "Indoor".</span><span class="en-text hidden"><strong>Camera White Balance:</strong> If your camera has White Balance (WB) settings, try switching from Auto to Manual and select "Fluorescent" or "Indoor" mode.</span></li>
+                <li><span class="my-text"><strong>Lampu Kuning:</strong> Elakkan meletakkan kamera terlalu dekat dengan lampu kuning di masjid. Cahaya ini yang menyebabkan warna kuning.</span><span class="en-text hidden"><strong>Yellow Lights:</strong> Avoid placing the camera too close to yellow lights in the mosque. This is the main cause of the yellow color.</span></li>
+                <li><span class="my-text"><strong>Ujian Stream:</strong> Selepas membetulkan warna, buat "Test Stream" atau "Start Recording" sekejap untuk pastikan warna nampak elok di Facebook.</span><span class="en-text hidden"><strong>Test Stream:</strong> After correcting colors, do a "Test Stream" or "Start Recording" briefly to ensure colors look good on Facebook.</span></li>
+            </ul>
+            
+            <div class="bug-warning">
+                <span class="my-text"><strong>Amaran:</strong> Jangan lupa klik <strong>OK</strong> atau tutup tetingkap Filters selepas selesai. Jika tidak, tetapan mungkin tidak disimpan.</span>
+                <span class="en-text hidden"><strong>Warning:</strong> Don't forget to click <strong>OK</strong> or close the Filters window after you finish. Otherwise, settings may not be saved.</span>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Fungsi Tukar Bahasa
+        function tukarBahasa(lang) {
+            var myTexts = document.getElementsByClassName('my-text');
+            var enTexts = document.getElementsByClassName('en-text');
+
+            if (lang === 'my') {
+                for (var i = 0; i < myTexts.length; i++) {
+                    myTexts[i].classList.remove('hidden');
+                }
+                for (var i = 0; i < enTexts.length; i++) {
+                    enTexts[i].classList.add('hidden');
+                }
+                document.getElementById('btn-my').classList.add('active');
+                document.getElementById('btn-en').classList.remove('active');
+            } else {
+                for (var i = 0; i < enTexts.length; i++) {
+                    enTexts[i].classList.remove('hidden');
+                }
+                for (var i = 0; i < myTexts.length; i++) {
+                    myTexts[i].classList.add('hidden');
+                }
+                document.getElementById('btn-en').classList.add('active');
+                document.getElementById('btn-my').classList.remove('active');
+            }
+        }
+
+        // Fungsi Navigasi Menu
+        function tukarSkrin(sectionId, btnElement) {
+            var sections = document.getElementsByClassName('content-section');
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
+            }
+
+            var target = document.getElementById(sectionId);
+            if (target) {
+                target.classList.add('active');
+            }
+
+            var buttons = document.getElementsByClassName('menu-btn');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+            if (btnElement) {
+                btnElement.classList.add('active');
+            }
+
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        // Butang Menu Telefon
+        document.getElementById('menu-toggle').onclick = function() {
+            var side = document.getElementById('sidebar');
+            side.classList.toggle('open');
+        };
+
+        // Set Bahasa Melayu sebagai default
+        window.onload = function() {
+            tukarBahasa('my');
+        };
+    </script>
+</body>
+</html>
