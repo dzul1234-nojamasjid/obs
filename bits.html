@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Bitrate OBS | OBS Bitrate Guide</title>
+    <style>
+        /* --- TEMA DARK MODE --- */
+        :root {
+            --primary-color: #4da3ff; 
+            --bg-color: #121212; 
+            --text-color: #e0e0e0; 
+            --sidebar-bg: #1e1e1e; 
+            --card-bg: #1e1e1e; 
+            --border-color: #333;
+            --hover-bg: #2a2a2a;
+            --note-bg: #332b00;
+            --note-border: #ffc107;
+            --highlight-bg: #1e3a2a;
+            --highlight-border: #28a745;
+            --bug-bg: #3a1e1e;
+            --bug-border: #dc3545;
+            --toggle-bg: #333;
+            --step-bg: #2a2a2a;
+            --table-header-bg: #333;
+            --table-border: #555;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- MENU SISI --- */
+        #sidebar {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px 0;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header { padding: 0 20px 15px 20px; border-bottom: 2px solid var(--primary-color); margin-bottom: 15px; }
+        .sidebar-header h2 { font-size: 1.2rem; color: var(--primary-color); margin-bottom: 10px; }
+
+        /* BUTANG BAHASA */
+        .lang-switch { display: flex; background-color: var(--toggle-bg); border-radius: 20px; overflow: hidden; margin-top: 10px; }
+        .lang-switch button { flex: 1; padding: 8px 0; border: none; background: none; color: #888; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: 0.3s; }
+        .lang-switch button.active { background-color: var(--primary-color); color: #121212; }
+
+        /* BUTANG MENU */
+        .menu-btn { display: block; width: 100%; padding: 12px 20px; background: none; border: none; text-align: left; cursor: pointer; font-size: 0.95rem; color: #a0a0a0; border-left: 4px solid transparent; transition: 0.2s; }
+        .menu-btn:hover { background-color: var(--hover-bg); color: var(--text-color); }
+        .menu-btn.active { background-color: var(--hover-bg); color: var(--primary-color); border-left: 4px solid var(--primary-color); font-weight: bold; }
+
+        /* --- KANDUNGAN UTAMA --- */
+        #main-content { flex: 1; padding: 30px 40px; overflow-y: auto; scroll-behavior: smooth; }
+
+        .content-section { display: none; background-color: var(--card-bg); padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); max-width: 900px; margin: 0 auto; }
+        .content-section.active { display: block; }
+
+        h1, h2, h3 { color: #ffffff; margin-bottom: 15px; }
+        h1 { font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; color: var(--primary-color); }
+        h2 { font-size: 1.4rem; margin-top: 25px; color: var(--primary-color); }
+        h3 { font-size: 1.1rem; margin-top: 20px; color: #d0d0d0; }
+        p { line-height: 1.6; margin-bottom: 12px; }
+        strong { color: #ffffff; }
+        ul, ol { margin-bottom: 15px; padding-left: 25px; line-height: 1.6; }
+        li { margin-bottom: 8px; }
+        code { background-color: #333; padding: 2px 6px; border-radius: 4px; font-family: monospace; color: #ff9d9d; }
+
+        /* KOTAK NOTA */
+        .note, .highlight, .bug-warning { padding: 15px; margin: 20px 0; border-radius: 4px; font-size: 0.95rem; color: #f5f5f5; }
+        .note { background-color: var(--note-bg); border-left: 4px solid var(--note-border); }
+        .highlight { background-color: var(--highlight-bg); border-left: 4px solid var(--highlight-border); }
+        .bug-warning { background-color: var(--bug-bg); border-left: 4px solid var(--bug-border); }
+
+        /* KOTAK LANGKAH (STEP) */
+        .step-box { background-color: var(--step-bg); border: 1px solid var(--border-color); padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .step-number { display: inline-block; background-color: var(--primary-color); color: #121212; font-weight: bold; width: 30px; height: 30px; text-align: center; line-height: 30px; border-radius: 50%; margin-right: 10px; }
+        .step-title { font-size: 1.1rem; font-weight: bold; color: #ffffff; }
+
+        /* JADUAL */
+        .settings-table { width: 100%; border-collapse: collapse; margin-top: 15px; background-color: var(--step-bg); }
+        .settings-table th, .settings-table td { padding: 12px; border: 1px solid var(--table-border); text-align: left; }
+        .settings-table th { background-color: var(--table-header-bg); color: #ffffff; }
+
+        /* --- PAPARAN TELEFON --- */
+        #menu-toggle { display: none; position: fixed; bottom: 20px; right: 20px; z-index: 1000; background-color: var(--primary-color); color: #121212; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            #sidebar { position: fixed; z-index: 999; transform: translateX(-100%); height: 100vh; width: 85%; max-width: 300px; box-shadow: 2px 0 10px rgba(0,0,0,0.5); }
+            #sidebar.open { transform: translateX(0); }
+            #main-content { padding: 15px; height: 100vh; overflow-y: auto; }
+            .content-section { padding: 20px; margin-bottom: 20px; }
+            h1 { font-size: 1.5rem; } h2 { font-size: 1.2rem; } h3 { font-size: 1rem; }
+            #menu-toggle { display: block; }
+            .settings-table th, .settings-table td { padding: 8px; font-size: 0.9rem; }
+        }
+
+        /* KELAS KAWALAN BAHASA */
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <button id="menu-toggle">☰</button>
+
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h2>OBS Bitrate Guide</h2>
+            <div class="lang-switch">
+                <button id="btn-my" class="active" onclick="tukarBahasa('my')">BM</button>
+                <button id="btn-en" onclick="tukarBahasa('en')">EN</button>
+            </div>
+        </div>
+        
+        <button class="menu-btn active" onclick="tukarSkrin('intro', this)">
+            <span class="my-text">1. Apa Itu Bitrate?</span>
+            <span class="en-text hidden">1. What is Bitrate?</span>
+        </button>
+        <button class="menu-btn" onclick="tukarSkrin('settings', this)">
+            <span class="my-text">2. Tetapan Yang Disyorkan</span>
+            <span class="en-text hidden">2. Recommended Settings</span>
+        </button>
+        <button class="menu-btn" onclick="tukarSkrin('howto', this)">
+            <span class="my-text">3. Cara Tukar Bitrate</span>
+            <span class="en-text hidden">3. How to Change Bitrate</span>
+        </button>
+        <button class="menu-btn" onclick="tukarSkrin('troubleshoot', this)">
+            <span class="my-text">4. Masalah & Penyelesaian</span>
+            <span class="en-text hidden">4. Issues & Solutions</span>
+        </button>
+    </nav>
+
+    <main id="main-content">
+
+        <!-- TOPIK 1: PENGENALAN -->
+        <section id="intro" class="content-section active">
+            <h1>
+                <span class="my-text">1. Apa Itu Bitrate?</span>
+                <span class="en-text hidden">1. What is Bitrate?</span>
+            </h1>
+            
+            <p class="my-text"><strong>Bitrate</strong> adalah jumlah data video yang dihantar ke Facebook setiap detik. Ia diukur dalam <strong>kbps</strong> (kilobit per saat).</p>
+            <p class="en-text hidden"><strong>Bitrate</strong> is the amount of video data sent to Facebook every second. It is measured in <strong>kbps</strong> (kilobits per second).</p>
+
+            <h3><span class="my-text">Bayangkan seperti paip air:</span><span class="en-text hidden">Imagine it like a water pipe:</span></h3>
+            <ul>
+                <li><span class="my-text"><strong>Bitrate Rendah:</strong> Paip kecil. Air (data) sikit. Gambar nampak kabur/pecah (pixelated).</span><span class="en-text hidden"><strong>Low Bitrate:</strong> Small pipe. Little water (data). Image looks blurry/pixelated.</span></li>
+                <li><span class="my-text"><strong>Bitrate Tinggi:</strong> Paip besar. Air banyak. Gambar tajam dan jelas. Tapi perlu internet laju!</span><span class="en-text hidden"><strong>High Bitrate:</strong> Large pipe. Plenty of water. Image is sharp and clear. But needs fast internet!</span></li>
+            </ul>
+
+            <div class="note">
+                <span class="my-text"><strong>Peraturan Emas:</strong> Jika bitrate terlalu tinggi untuk internet Tuan, siaran akan <strong>terputus-putus (buffering/lag)</strong>. Jika terlalu rendah, gambar akan <strong>kabur</strong>.</span>
+                <span class="en-text hidden"><strong>Golden Rule:</strong> If the bitrate is too high for your internet, the stream will <strong>buffer/lag</strong>. If too low, the image will be <strong>blurry</strong>.</span>
+            </div>
+        </section>
+
+        <!-- TOPIK 2: TETAPAN DISYORKAN -->
+        <section id="settings" class="content-section">
+            <h1><span class="my-text">2. Tetapan Bitrate Yang Disyorkan</span><span class="en-text hidden">2. Recommended Bitrate Settings</span></h1>
+            
+            <p class="my-text">Pilih bitrate berdasarkan <strong>kelajuan upload internet</strong> di masjid Tuan. Jangan letak lebih tinggi daripada kemampuan internet.</p>
+            <p class="en-text hidden">Choose a bitrate based on the <strong>internet upload speed</strong> at your mosque. Don't set it higher than your internet capability.</p>
+
+            <table class="settings-table">
+                <thead>
+                    <tr>
+                        <th><span class="my-text">Kualiti / Resolusi</span><span class="en-text hidden">Quality / Resolution</span></th>
+                        <th><span class="my-text">Bitrate Video</span><span class="en-text hidden">Video Bitrate</span></th>
+                        <th><span class="my-text">Kelajuan Upload Internet</span><span class="en-text hidden">Internet Upload Speed</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>720p (HD) - Asas</strong></td>
+                        <td>2500 - 3000 kbps</td>
+                        <td>5 Mbps ke atas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>1080p (Full HD) - Disyorkan</strong></td>
+                        <td>4000 - 4500 kbps</td>
+                        <td>8 Mbps ke atas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>1080p (Kualiti Tinggi)</strong></td>
+                        <td>6000 kbps</td>
+                        <td>10 Mbps ke atas</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight">
+                <span class="my-text"><strong>Disyorkan untuk Masjid:</strong> Gunakan <strong>1080p pada 4000 kbps</strong>. Ia memberi kualiti yang sangat baik tanpa membebankan internet.</span>
+                <span class="en-text hidden"><strong>Recommended for Mosque:</strong> Use <strong>1080p at 4000 kbps</strong>. It gives excellent quality without straining the internet.</span>
+            </div>
+        </section>
+
+        <!-- TOPIK 3: CARA TUKAR BITRATE -->
+        <section id="howto" class="content-section">
+            <h1><span class="my-text">3. Cara Tukar Bitrate di OBS</span><span class="en-text hidden">3. How to Change Bitrate in OBS</span></h1>
+            
+            <div class="step-box">
+                <span class="step-number">1</span>
+                <span class="step-title"><span class="my-text">Buka Settings</span><span class="en-text hidden">Open Settings</span></span>
+                <p style="margin-top: 10px;">
+                    <span class="my-text">Klik butang <strong>Settings</strong> di penjuru kanan bawah OBS.</span>
+                    <span class="en-text hidden">Click the <strong>Settings</strong> button at the bottom right of OBS.</span>
+                </p>
+            </div>
+
+            <div class="step-box">
+                <span class="step-number">2</span>
+                <span class="step-title"><span class="my-text">Pergi ke Output</span><span class="en-text hidden">Go to Output</span></span>
+                <p style="margin-top: 10px;">
+                    <span class="my-text">Di menu kiri, klik <strong>Output</strong>. Pastikan <strong>Output Mode</strong> ditukar kepada <strong>Advanced</strong>.</span>
+                    <span class="en-text hidden">In the left menu, click <strong>Output</strong>. Make sure <strong>Output Mode</strong> is set to <strong>Advanced</strong>.</span>
+                </p>
+            </div>
+
+            <div class="step-box">
+                <span class="step-number">3</span>
+                <span class="step-title"><span class="my-text">Pilih Tab Streaming</span><span class="en-text hidden">Select Streaming Tab</span></span>
+                <p style="margin-top: 10px;">
+                    <span class="my-text">Klik tab <strong>Streaming</strong>. Cari kotak <strong>Bitrate</strong>.</span>
+                    <span class="en-text hidden">Click the <strong>Streaming</strong> tab. Find the <strong>Bitrate</strong> box.</span>
+                </p>
+            </div>
+
+            <div class="step-box">
+                <span class="step-number">4</span>
+                <span class="step-title"><span class="my-text">Masukkan Nilai Bitrate</span><span class="en-text hidden">Enter Bitrate Value</span></span>
+                <p style="margin-top: 10px;">
+                    <span class="my-text">Taip nilai yang disyorkan (contoh: <strong>4000</strong>). Pastikan kotak di sebelahnya tertulis <strong>Kbps</strong>.</span>
+                    <span class="en-text hidden">Type the recommended value (e.g., <strong>4000</strong>). Make sure the box next to it says <strong>Kbps</strong>.</span>
+                </p>
+            </div>
+
+            <div class="step-box">
+                <span class="step-number">5</span>
+                <span class="step-title"><span class="my-text">Simpan</span><span class="en-text hidden">Save</span></span>
+                <p style="margin-top: 10px;">
+                    <span class="my-text">Klik <strong>Apply</strong> dan kemudian <strong>OK</strong>.</span>
+                    <span class="en-text hidden">Click <strong>Apply</strong> and then <strong>OK</strong>.</span>
+                </p>
+            </div>
+        </section>
+
+        <!-- TOPIK 4: MASALAH & PENYELESAIAN -->
+        <section id="troubleshoot" class="content-section">
+            <h1><span class="my-text">4. Masalah & Penyelesaian</span><span class="en-text hidden">4. Issues & Solutions</span></h1>
+            
+            <h3><span class="my-text">Masalah A: Siaran Terputus-putus / Lag</span><span class="en-text hidden">Problem A: Stream Buffering / Lag</span></h3>
+            <ul>
+                <li><span class="my-text"><strong>Punca:</strong> Bitrate terlalu tinggi untuk internet Tuan.</span><span class="en-text hidden"><strong>Cause:</strong> Bitrate too high for your internet.</span></li>
+                <li><span class="my-text"><strong>Penyelesaian:</strong> Turunkan Bitrate. Contoh: Dari 4000 ke 3000 kbps. Atau turunkan resolusi dari 1080p ke 720p.</span><span class="en-text hidden"><strong>Solution:</strong> Lower the Bitrate. E.g., From 4000 to 3000 kbps. Or lower resolution from 1080p to 720p.</span></li>
+            </ul>
+
+            <h3><span class="my-text">Masalah B: Gambar Nampak Kabur / Pecah (Pixelated)</span><span class="en-text hidden">Problem B: Image Looks Blurry / Pixelated</span></h3>
+            <ul>
+                <li><span class="my-text"><strong>Punca:</strong> Bitrate terlalu rendah.</span><span class="en-text hidden"><strong>Cause:</strong> Bitrate too low.</span></li>
+                <li><span class="my-text"><strong>Penyelesaian:</strong> Naikkan Bitrate. Contoh: Dari 2500 ke 4000 kbps. Pastikan internet Tuan mampu.</span><span class="en-text hidden"><strong>Solution:</strong> Increase Bitrate. E.g., From 2500 to 4000 kbps. Ensure your internet can handle it.</span></li>
+            </ul>
+
+            <h3><span class="my-text">Masalah C: Facebook Beri Amaran "Kualiti Rendah"</span><span class="en-text hidden">Problem C: Facebook Warns "Low Quality"</span></h3>
+            <ul>
+                <li><span class="my-text"><strong>Punca:</strong> Facebook mengesan bitrate Tuan tidak stabil.</span><span class="en-text hidden"><strong>Cause:</strong> Facebook detects your bitrate is unstable.</span></li>
+                <li><span class="my-text"><strong>Penyelesaian:</strong> Semak kelajuan internet Tuan. Gunakan kabel LAN (bukan WiFi) untuk sambungan yang lebih stabil.</span><span class="en-text hidden"><strong>Solution:</strong> Check your internet speed. Use a LAN cable (not WiFi) for a more stable connection.</span></li>
+            </ul>
+
+            <div class="bug-warning">
+                <span class="my-text"><strong>Penting:</strong> Jangan sesekali letak bitrate melebihi 50% daripada kelajuan upload internet Tuan. Contoh: Jika upload 10 Mbps, jangan letak bitrate lebih dari 5000 kbps.</span>
+                <span class="en-text hidden"><strong>Important:</strong> Never set bitrate more than 50% of your internet upload speed. E.g., If upload is 10 Mbps, don't set bitrate higher than 5000 kbps.</span>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Fungsi Tukar Bahasa
+        function tukarBahasa(lang) {
+            var myTexts = document.getElementsByClassName('my-text');
+            var enTexts = document.getElementsByClassName('en-text');
+
+            if (lang === 'my') {
+                for (var i = 0; i < myTexts.length; i++) {
+                    myTexts[i].classList.remove('hidden');
+                }
+                for (var i = 0; i < enTexts.length; i++) {
+                    enTexts[i].classList.add('hidden');
+                }
+                document.getElementById('btn-my').classList.add('active');
+                document.getElementById('btn-en').classList.remove('active');
+            } else {
+                for (var i = 0; i < enTexts.length; i++) {
+                    enTexts[i].classList.remove('hidden');
+                }
+                for (var i = 0; i < myTexts.length; i++) {
+                    myTexts[i].classList.add('hidden');
+                }
+                document.getElementById('btn-en').classList.add('active');
+                document.getElementById('btn-my').classList.remove('active');
+            }
+        }
+
+        // Fungsi Navigasi Menu
+        function tukarSkrin(sectionId, btnElement) {
+            var sections = document.getElementsByClassName('content-section');
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
+            }
+
+            var target = document.getElementById(sectionId);
+            if (target) {
+                target.classList.add('active');
+            }
+
+            var buttons = document.getElementsByClassName('menu-btn');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+            if (btnElement) {
+                btnElement.classList.add('active');
+            }
+
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        // Butang Menu Telefon
+        document.getElementById('menu-toggle').onclick = function() {
+            var side = document.getElementById('sidebar');
+            side.classList.toggle('open');
+        };
+
+        // Set Bahasa Melayu sebagai default
+        window.onload = function() {
+            tukarBahasa('my');
+        };
+    </script>
+</body>
+</html>
