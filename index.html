@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OBS Studio Pocket Guide | Panduan Poket OBS</title>
     <style>
-        /* --- DARK MODE THEME / TEMA GELAP --- */
+        /* --- DARK MODE THEME --- */
         :root {
             --primary-color: #4da3ff; 
             --bg-color: #121212; 
@@ -38,7 +38,7 @@
             overflow: hidden;
         }
 
-        /* --- SIDEBAR / MENU SISI --- */
+        /* --- SIDEBAR --- */
         #sidebar {
             width: 300px;
             background-color: var(--sidebar-bg);
@@ -64,7 +64,6 @@
             margin-bottom: 10px;
         }
 
-        /* LANGUAGE TOGGLE BUTTON */
         .lang-switch {
             display: flex;
             background-color: var(--toggle-bg);
@@ -116,7 +115,7 @@
             font-weight: bold;
         }
 
-        /* --- MAIN CONTENT / KANDUNGAN --- */
+        /* --- MAIN CONTENT --- */
         #main-content {
             flex: 1;
             padding: 30px 40px;
@@ -154,7 +153,6 @@
         li { margin-bottom: 8px; }
         code { background-color: #333; padding: 2px 6px; border-radius: 4px; font-family: monospace; color: #ff9d9d; }
 
-        /* BOX STYLES */
         .note, .highlight, .bug-warning {
             padding: 15px;
             margin: 20px 0;
@@ -166,7 +164,7 @@
         .highlight { background-color: var(--highlight-bg); border-left: 4px solid var(--highlight-border); }
         .bug-warning { background-color: var(--bug-bg); border-left: 4px solid var(--bug-border); }
 
-        /* --- MOBILE RESPONSIVE / PAPARAN MUDAH ALIH --- */
+        /* --- MOBILE RESPONSIVE --- */
         #menu-toggle {
             display: none;
             position: fixed;
@@ -220,7 +218,7 @@
             </div>
         </div>
         
-        <!-- MENU ITEMS (With Dual Language) -->
+        <!-- MENU ITEMS (Dual Language) -->
         <button class="menu-btn active" onclick="showSection('intro', this)">
             <span class="lang-my">1. Pengenalan & Asas</span>
             <span class="lang-en">1. Intro & Basics</span>
@@ -392,7 +390,7 @@
     </main>
 
     <script>
-        // LANGUAGE SWITCHING LOGIC
+        // 1. LANGUAGE SWITCHING LOGIC
         function switchLang(lang) {
             // Hide all language elements first
             var allLangElements = document.querySelectorAll('.lang-my, .lang-en');
@@ -403,7 +401,6 @@
             // Show selected language
             var selectedElements = document.querySelectorAll('.' + lang);
             for (var i = 0; i < selectedElements.length; i++) {
-                // If it's an inline element (like span), use inline. Otherwise use block.
                 if (selectedElements[i].tagName === 'SPAN') {
                     selectedElements[i].style.display = 'inline';
                 } else {
@@ -417,7 +414,7 @@
             document.getElementById('btn-' + lang).classList.add('active');
         }
 
-        // NAVIGATION LOGIC
+        // 2. NAVIGATION LOGIC
         function showSection(sectionId, btnElement) {
             // Hide all sections
             var sections = document.querySelectorAll('.content-section');
@@ -441,7 +438,7 @@
                 btnElement.classList.add('active');
             }
 
-            // Close sidebar on mobile after clicking
+            // Close sidebar on mobile
             if (window.innerWidth <= 768) {
                 document.getElementById('sidebar').classList.remove('open');
             }
@@ -450,12 +447,12 @@
             document.getElementById('main-content').scrollTop = 0;
         }
 
-        // MOBILE SIDEBAR TOGGLE
+        // 3. MOBILE SIDEBAR TOGGLE
         document.getElementById('menu-toggle').addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('open');
         });
 
-        // INITIALIZE: Set default language to Malay on load
+        // 4. INITIALIZE: Set default language to Malay on load
         window.onload = function() {
             switchLang('my');
         };
