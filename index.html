@@ -154,12 +154,6 @@
         li { margin-bottom: 8px; }
         code { background-color: #333; padding: 2px 6px; border-radius: 4px; font-family: monospace; color: #ff9d9d; }
 
-        /* TEXT HIDING CLASSES FOR DUAL LANGUAGE */
-        .lang-en { display: none; }
-        .lang-my { display: block; }
-        li .lang-en { display: none; }
-        li .lang-my { display: inline; }
-
         /* BOX STYLES */
         .note, .highlight, .bug-warning {
             padding: 15px;
@@ -221,8 +215,8 @@
         <div class="sidebar-header">
             <h2>OBS Pocket Guide</h2>
             <div class="lang-switch">
-                <button id="btn-my" class="active" onclick="switchLang('my')">Bahasa Melayu</button>
-                <button id="btn-en" onclick="switchLang('en')">English</button>
+                <button id="btn-my" class="active" onclick="switchLang('my')">BM</button>
+                <button id="btn-en" onclick="switchLang('en')">EN</button>
             </div>
         </div>
         
@@ -233,27 +227,27 @@
         </button>
         <button class="menu-btn" onclick="showSection('scene', this)">
             <span class="lang-my">2. Konsep Scene & Source</span>
-            <span class="lang-en">2. Scene & Source Concept</span>
+            <span class="lang-en">2. Scene & Source</span>
         </button>
         <button class="menu-btn" onclick="showSection('setup', this)">
-            <span class="lang-my">3. Panduan Setup Asas</span>
-            <span class="lang-en">3. Basic Setup Checklist</span>
+            <span class="lang-my">3. Panduan Setup</span>
+            <span class="lang-en">3. Setup Guide</span>
         </button>
         <button class="menu-btn" onclick="showSection('audio', this)">
-            <span class="lang-my">4. Rahsia Audio & Mute</span>
-            <span class="lang-en">4. Audio & Mute Secrets</span>
+            <span class="lang-my">4. Rahsia Audio</span>
+            <span class="lang-en">4. Audio Secrets</span>
         </button>
         <button class="menu-btn" onclick="showSection('studio', this)">
-            <span class="lang-my">5. Kuasai Studio Mode</span>
-            <span class="lang-en">5. Mastering Studio Mode</span>
+            <span class="lang-my">5. Studio Mode</span>
+            <span class="lang-en">5. Studio Mode</span>
         </button>
         <button class="menu-btn" onclick="showSection('media', this)">
-            <span class="lang-my">6. Masalah Sumber Media</span>
-            <span class="lang-en">6. Media Source Issues</span>
+            <span class="lang-my">6. Sumber Media</span>
+            <span class="lang-en">6. Media Sources</span>
         </button>
         <button class="menu-btn" onclick="showSection('bug', this)">
-            <span class="lang-my">7. Isu OBS Versi 33</span>
-            <span class="lang-en">7. OBS v33 Bug Issues</span>
+            <span class="lang-my">7. Isu OBS v33</span>
+            <span class="lang-en">7. OBS v33 Bugs</span>
         </button>
         <button class="menu-btn" onclick="showSection('tips', this)">
             <span class="lang-my">8. Tips Bertugas</span>
@@ -400,22 +394,24 @@
     <script>
         // LANGUAGE SWITCHING LOGIC
         function switchLang(lang) {
-            // Hide all language elements
-            document.querySelectorAll('.lang-my, .lang-en').forEach(el => {
-                el.style.display = 'none';
-            });
+            // Hide all language elements first
+            var allLangElements = document.querySelectorAll('.lang-my, .lang-en');
+            for (var i = 0; i < allLangElements.length; i++) {
+                allLangElements[i].style.display = 'none';
+            }
 
             // Show selected language
-            document.querySelectorAll('.' + lang).forEach(el => {
-                // Special handling for inline elements (span in list)
-                if(el.tagName === 'SPAN') {
-                    el.style.display = 'inline';
+            var selectedElements = document.querySelectorAll('.' + lang);
+            for (var i = 0; i < selectedElements.length; i++) {
+                // If it's an inline element (like span), use inline. Otherwise use block.
+                if (selectedElements[i].tagName === 'SPAN') {
+                    selectedElements[i].style.display = 'inline';
                 } else {
-                    el.style.display = 'block';
+                    selectedElements[i].style.display = 'block';
                 }
-            });
+            }
 
-            // Update button styles
+            // Update active button style
             document.getElementById('btn-my').classList.remove('active');
             document.getElementById('btn-en').classList.remove('active');
             document.getElementById('btn-' + lang).classList.add('active');
@@ -424,25 +420,29 @@
         // NAVIGATION LOGIC
         function showSection(sectionId, btnElement) {
             // Hide all sections
-            const sections = document.querySelectorAll('.content-section');
-            sections.forEach(sec => sec.classList.remove('active'));
+            var sections = document.querySelectorAll('.content-section');
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
+            }
 
             // Show selected section
-            const targetSection = document.getElementById(sectionId);
+            var targetSection = document.getElementById(sectionId);
             if (targetSection) {
                 targetSection.classList.add('active');
             }
 
             // Update active menu button
-            const buttons = document.querySelectorAll('.menu-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
+            var buttons = document.querySelectorAll('.menu-btn');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
             
-            if(btnElement) {
+            if (btnElement) {
                 btnElement.classList.add('active');
             }
 
-            // Close sidebar on mobile
-            if(window.innerWidth <= 768) {
+            // Close sidebar on mobile after clicking
+            if (window.innerWidth <= 768) {
                 document.getElementById('sidebar').classList.remove('open');
             }
             
@@ -455,8 +455,10 @@
             document.getElementById('sidebar').classList.toggle('open');
         });
 
-        // INITIALIZE: Ensure only Malay is shown at start
-        switchLang('my');
+        // INITIALIZE: Set default language to Malay on load
+        window.onload = function() {
+            switchLang('my');
+        };
     </script>
 </body>
 </html>
