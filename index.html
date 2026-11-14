@@ -3,15 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panduan OBS Studio - Masjid Al-Khair</title>
+    <title>Panduan OBS Studio - Masjid Al-Khair (Dark Mode)</title>
     <style>
+        /* --- TEMA DARK MODE --- */
         :root {
-            --primary-color: #1a73e8; /* Facebook Blue */
-            --bg-color: #f4f6f8;
-            --text-color: #333;
-            --sidebar-bg: #ffffff;
-            --sidebar-width: 280px;
-            --card-bg: #ffffff;
+            --primary-color: #4da3ff; /* Biru cerah untuk dark mode */
+            --bg-color: #121212; /* Latar belakang gelap */
+            --text-color: #e0e0e0; /* Teks cerah */
+            --sidebar-bg: #1e1e1e; /* Latar belakang menu */
+            --card-bg: #1e1e1e; /* Latar belakang kad kandungan */
+            --border-color: #333;
+            --hover-bg: #2a2a2a;
+            --note-bg: #332b00;
+            --note-border: #ffc107;
+            --highlight-bg: #1e3a2a;
+            --highlight-border: #28a745;
+            --bug-bg: #3a1e1e;
+            --bug-border: #dc3545;
         }
 
         * {
@@ -31,9 +39,9 @@
 
         /* --- SIDEBAR (MENU) --- */
         #sidebar {
-            width: var(--sidebar-width);
+            width: 280px;
             background-color: var(--sidebar-bg);
-            border-right: 1px solid #ddd;
+            border-right: 1px solid var(--border-color);
             height: 100%;
             overflow-y: auto;
             padding: 20px 0;
@@ -59,17 +67,18 @@
             text-align: left;
             cursor: pointer;
             font-size: 0.95rem;
-            color: #444;
-            transition: background 0.2s, border-left 0.2s;
+            color: #a0a0a0; /* Warna teks menu */
+            transition: background 0.2s, border-left 0.2s, color 0.2s;
             border-left: 4px solid transparent;
         }
 
         .menu-btn:hover {
-            background-color: #e8f0fe;
+            background-color: var(--hover-bg);
+            color: var(--text-color);
         }
 
         .menu-btn.active {
-            background-color: #e8f0fe;
+            background-color: var(--hover-bg);
             color: var(--primary-color);
             border-left: 4px solid var(--primary-color);
             font-weight: bold;
@@ -88,7 +97,7 @@
             background-color: var(--card-bg);
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             animation: fadeIn 0.4s ease;
             max-width: 900px;
             margin: 0 auto;
@@ -104,15 +113,16 @@
         }
 
         h1, h2, h3 {
-            color: #2c3e50;
+            color: #ffffff;
             margin-bottom: 15px;
         }
 
-        h1 { font-size: 1.8rem; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h1 { font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; color: var(--primary-color); }
         h2 { font-size: 1.4rem; margin-top: 25px; color: var(--primary-color); }
-        h3 { font-size: 1.1rem; margin-top: 20px; }
+        h3 { font-size: 1.1rem; margin-top: 20px; color: #d0d0d0; }
 
         p { line-height: 1.6; margin-bottom: 12px; }
+        strong { color: #ffffff; }
 
         ul, ol {
             margin-bottom: 15px;
@@ -122,30 +132,41 @@
 
         li { margin-bottom: 8px; }
 
+        code {
+            background-color: #333;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #ff9d9d;
+        }
+
         .note {
-            background-color: #fff3cd;
-            border-left: 4px solid #ffc107;
+            background-color: var(--note-bg);
+            border-left: 4px solid var(--note-border);
             padding: 15px;
             margin: 20px 0;
             border-radius: 4px;
             font-size: 0.95rem;
+            color: #f5f5f5;
         }
 
         .highlight {
-            background-color: #d4edda;
-            border-left: 4px solid #28a745;
+            background-color: var(--highlight-bg);
+            border-left: 4px solid var(--highlight-border);
             padding: 15px;
             margin: 20px 0;
             border-radius: 4px;
             font-size: 0.95rem;
+            color: #f5f5f5;
         }
 
         .bug-warning {
-            background-color: #f8d7da;
-            border-left: 4px solid #dc3545;
+            background-color: var(--bug-bg);
+            border-left: 4px solid var(--bug-border);
             padding: 15px;
             margin: 20px 0;
             border-radius: 4px;
+            color: #f5f5f5;
         }
 
         /* --- MOBILE RESPONSIVE --- */
@@ -156,30 +177,50 @@
             right: 20px;
             z-index: 1000;
             background-color: var(--primary-color);
-            color: white;
+            color: #121212;
             border: none;
             border-radius: 50%;
             width: 60px;
             height: 60px;
             font-size: 24px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
 
+        /* --- MEDIA QUERIES (UNTUK PHONE) --- */
         @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
             #sidebar {
                 position: fixed;
                 z-index: 999;
                 transform: translateX(-100%);
                 height: 100vh;
-                box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+                width: 85%;
+                max-width: 300px;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.5);
             }
             #sidebar.open {
                 transform: translateX(0);
             }
+            
             #main-content {
-                padding: 20px;
+                padding: 15px;
+                height: 100vh;
+                overflow-y: auto;
             }
+
+            .content-section {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            h1 { font-size: 1.5rem; }
+            h2 { font-size: 1.2rem; }
+            h3 { font-size: 1rem; }
+
             #menu-toggle {
                 display: block;
             }
@@ -188,7 +229,7 @@
 </head>
 <body>
 
-    <!-- KAWALAN MOBILE -->
+    <!-- BUTANG MENU UNTUK HANDPHONE -->
     <button id="menu-toggle">☰</button>
 
     <!-- MENU SISI (SIDEBAR) -->
@@ -214,7 +255,7 @@
             <h3>Perkara Penting:</h3>
             <ul>
                 <li>OBS memisahkan antara <strong>Preview</strong> (apa yang kita lihat) dan <strong>Program</strong> (apa yang penonton lihat).</li>
-                <li>Gunakan **OBS Studio 31** jika boleh, kerana versi 33.0.1 mempunyai beberapa isu (bug) audio yang menyusahkan.</li>
+                <li>Gunakan <strong>OBS Studio 31</strong> jika boleh, kerana versi 33.0.1 mempunyai beberapa isu (bug) audio yang menyusahkan.</li>
                 <li>Pastikan komputer Tuan mempunyai spesifikasi yang mencukupi (CPU dan RAM) untuk mengelakkan OBS "hang".</li>
             </ul>
             <div class="note">
@@ -231,7 +272,7 @@
                 <li><strong>Source (Barang):</strong> Bahan yang dimasukkan ke dalam Scene. Contoh: Kamera (Video Capture Device), Gambar (Image), Audio (Audio Input Capture).</li>
             </ul>
             <div class="highlight">
-                <strong>Penting:</strong> Jika Tuan memadam (Delete) Source, ia akan hilang dari semua Scene. Jika Tuan hanya mahu menyembunyikannya sementara, klik ikon **Mata** (Hide) sahaja. Jangan delete jika belum pasti.
+                <strong>Penting:</strong> Jika Tuan memadam (Delete) Source, ia akan hilang dari semua Scene. Jika Tuan hanya mahu menyembunyikannya sementara, klik ikon <strong>Mata</strong> (Hide) sahaja. Jangan delete jika belum pasti.
             </div>
         </section>
 
