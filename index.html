@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan OBS Studio - Masjid Al-Khair</title>
+    <style>
+        :root {
+            --primary-color: #1a73e8; /* Facebook Blue */
+            --bg-color: #f4f6f8;
+            --text-color: #333;
+            --sidebar-bg: #ffffff;
+            --sidebar-width: 280px;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR (MENU) --- */
+        #sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid #ddd;
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px 0;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        #sidebar h2 {
+            padding: 0 20px;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .menu-btn {
+            display: block;
+            width: 100%;
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #444;
+            transition: background 0.2s, border-left 0.2s;
+            border-left: 4px solid transparent;
+        }
+
+        .menu-btn:hover {
+            background-color: #e8f0fe;
+        }
+
+        .menu-btn.active {
+            background-color: #e8f0fe;
+            color: var(--primary-color);
+            border-left: 4px solid var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* --- MAIN CONTENT (KANDUNGAN) --- */
+        #main-content {
+            flex: 1;
+            padding: 30px 40px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .content-section {
+            display: none;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            animation: fadeIn 0.4s ease;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        h1 { font-size: 1.8rem; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h2 { font-size: 1.4rem; margin-top: 25px; color: var(--primary-color); }
+        h3 { font-size: 1.1rem; margin-top: 20px; }
+
+        p { line-height: 1.6; margin-bottom: 12px; }
+
+        ul, ol {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            line-height: 1.6;
+        }
+
+        li { margin-bottom: 8px; }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .highlight {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .bug-warning {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        /* --- MOBILE RESPONSIVE --- */
+        #menu-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            #sidebar {
+                position: fixed;
+                z-index: 999;
+                transform: translateX(-100%);
+                height: 100vh;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            }
+            #sidebar.open {
+                transform: translateX(0);
+            }
+            #main-content {
+                padding: 20px;
+            }
+            #menu-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- KAWALAN MOBILE -->
+    <button id="menu-toggle">☰</button>
+
+    <!-- MENU SISI (SIDEBAR) -->
+    <nav id="sidebar">
+        <h2>Panduan OBS Masjid</h2>
+        <button class="menu-btn active" onclick="showSection('intro', this)">1. Pengenalan & Asas OBS</button>
+        <button class="menu-btn" onclick="showSection('scene', this)">2. Konsep Scene & Source</button>
+        <button class="menu-btn" onclick="showSection('setup', this)">3. Panduan Setup Asas</button>
+        <button class="menu-btn" onclick="showSection('audio', this)">4. Rahsia Audio & Mute</button>
+        <button class="menu-btn" onclick="showSection('studio', this)">5. Kuasai Studio Mode</button>
+        <button class="menu-btn" onclick="showSection('media', this)">6. Masalah Sumber Media</button>
+        <button class="menu-btn" onclick="showSection('bug', this)">7. Isu OBS Versi 33 (Bug)</button>
+        <button class="menu-btn" onclick="showSection('tips', this)">8. Tips Bertugas di Masjid</button>
+    </nav>
+
+    <!-- KANDUNGAN UTAMA -->
+    <main id="main-content">
+
+        <!-- TOPIK 1 -->
+        <section id="intro" class="content-section active">
+            <h1>1. Pengenalan & Asas OBS</h1>
+            <p>Selamat datang ke panduan OBS Studio untuk Masjid. OBS (Open Broadcaster Software) adalah perisian percuma yang digunakan untuk menyiarkan (live streaming) video ke Facebook, YouTube, atau platform lain.</p>
+            <h3>Perkara Penting:</h3>
+            <ul>
+                <li>OBS memisahkan antara <strong>Preview</strong> (apa yang kita lihat) dan <strong>Program</strong> (apa yang penonton lihat).</li>
+                <li>Gunakan **OBS Studio 31** jika boleh, kerana versi 33.0.1 mempunyai beberapa isu (bug) audio yang menyusahkan.</li>
+                <li>Pastikan komputer Tuan mempunyai spesifikasi yang mencukupi (CPU dan RAM) untuk mengelakkan OBS "hang".</li>
+            </ul>
+            <div class="note">
+                <strong>Nota:</strong> Jangan takut untuk mencuba. Ramai juruteknik bermula dari kosong. Jika tersalah tekan, kita boleh baiki semula.
+            </div>
+        </section>
+
+        <!-- TOPIK 2 -->
+        <section id="scene" class="content-section">
+            <h1>2. Konsep Scene & Source</h1>
+            <p>Ini adalah asas paling penting dalam OBS. Fahami perbezaannya:</p>
+            <ul>
+                <li><strong>Scene (Panggung):</strong> Bekas atau slaid untuk menyusun atur paparan. Contoh: "Scene Ceramah", "Scene Iklan", "Scene Solat". OBS memerlukan sekurang-kurangnya satu Scene.</li>
+                <li><strong>Source (Barang):</strong> Bahan yang dimasukkan ke dalam Scene. Contoh: Kamera (Video Capture Device), Gambar (Image), Audio (Audio Input Capture).</li>
+            </ul>
+            <div class="highlight">
+                <strong>Penting:</strong> Jika Tuan memadam (Delete) Source, ia akan hilang dari semua Scene. Jika Tuan hanya mahu menyembunyikannya sementara, klik ikon **Mata** (Hide) sahaja. Jangan delete jika belum pasti.
+            </div>
+        </section>
+
+        <!-- TOPIK 3 -->
+        <section id="setup" class="content-section">
+            <h1>3. Panduan Setup Asas (Senarai Semak)</h1>
+            <p>Jika OBS Tuan terpadam atau kosong, ikut langkah ini untuk setup semula:</p>
+            <ol>
+                <li><strong>Masukkan Kamera:</strong> Klik <code>+</code> pada Sources > Pilih <strong>Video Capture Device</strong>. Pilih kamera yang betul (contoh: USB2.0 FHD UVC WebCam).</li>
+                <li><strong>Masukkan Audio (Mic):</strong> Klik <code>+</code> > Pilih <strong>Audio Input Capture</strong>. Pilih mikrofon (contoh: Microphone Array AMD).</li>
+                <li><strong>Masukkan Suara Komputer:</strong> Klik <code>+</code> > Pilih <strong>Audio Output Capture</strong> (untuk tangkap bunyi video dari YouTube).</li>
+                <li><strong>Betulkan Warna Kuning:</strong> Klik kanan pada kamera > <strong>Filters</strong> > Tambah <strong>Color Correction</strong>. Laraskan warna agar tidak kekuningan.</li>
+                <li><strong>Tetapan Facebook:</strong> Pergi ke <strong>Settings > Stream</strong>. Pilih Facebook dan masukkan Stream Key.</li>
+            </ol>
+        </section>
+
+        <!-- TOPIK 4 -->
+        <section id="audio" class="content-section">
+            <h1>4. Rahsia Audio & Mute</h1>
+            <p>Ini adalah bahagian yang paling mengelirukan. Fahami 3 konsep ini:</p>
+            <h3>A. Audio Mixer (Campuran Audio)</h3>
+            <ul>
+                <li><strong>Global:</strong> Audio yang berbunyi di semua Scene (contoh: Desktop Audio, Mic).</li>
+                <li><strong>Preview:</strong> Audio yang hanya berbunyi di Scene tertentu (contoh: Media Video).</li>
+            </ul>
+            <h3>B. Mute vs Monitoring (Versi Baru OBS)</h3>
+            <ul>
+                <li><strong>Butang Mute (Speaker):</strong> Menyekat bunyi daripada dihantar ke siaran (Facebook).</li>
+                <li><strong>Butang Monitoring (Fon Kepala):</strong> Membenarkan Tuan mendengar bunyi tersebut di pembesar suara laptop Tuan.</li>
+            </ul>
+            <h3>C. Advanced Audio Properties</h3>
+            <ul>
+                <li>Pergi ke <strong>Settings > Advanced Audio Properties</strong> (atau klik ikon gear di Audio Mixer).</li>
+                <li>Di sini Tuan boleh laraskan <strong>Volume</strong>, <strong>Balance</strong>, dan <strong>Tracks</strong>.</li>
+            </ul>
+            <div class="bug-warning">
+                <strong>Amaran:</strong> Jangan tandakan kotak "Enable" untuk "Video Capture Device" di Advanced Audio Properties. Ini boleh menyebabkan bunyi bising/echo.
+            </div>
+        </section>
+
+        <!-- TOPIK 5 -->
+        <section id="studio" class="content-section">
+            <h1>5. Kuasai Studio Mode</h1>
+            <p>Studio Mode memisahkan skrin kepada dua bahagian: <strong>Preview (Kiri)</strong> dan <strong>Program (Kanan)</strong>.</p>
+            <ul>
+                <li><strong>Preview (Kiri):</strong> Tempat Tuan menyediakan bahan. Audio di sini <strong>TIDAK AKAN KELUAR</strong> ke siaran.</li>
+                <li><strong>Program (Kanan):</strong> Ini adalah siaran sebenar. Penonton melihat ini.</li>
+                <li><strong>Transition (Tengah):</strong> Tekan butang ini untuk memindahkan paparan dari Preview ke Program (contoh: dari Scene Ceramah ke Scene Iklan).</li>
+            </ul>
+            <div class="highlight">
+                <strong>Tip Penting:</strong> Jika Tuan mahu berhenti menyiarkan video, pilih Scene lain di Preview (contoh: Scene Ceramah), kemudian tekan <strong>Transition</strong>. Video akan hilang dari Program.
+            </div>
+        </section>
+
+        <!-- TOPIK 6 -->
+        <section id="media" class="content-section">
+            <h1>6. Masalah Sumber Media (Video/Gambar)</h1>
+            <p>Masalah biasa yang dihadapi:</p>
+            <h3>A. Gambar Tidak Keluar (Skrin Hitam)</h3>
+            <ul>
+                <li>Pastikan Tuan menggunakan <strong>Image Source</strong>, bukan Media Source (untuk fail JPG/PNG).</li>
+                <li>Pastikan fail gambar tidak berada dalam folder OneDrive. Pindahkan ke Desktop atau Documents.</li>
+            </ul>
+            <h3>B. Video Tidak Berbunyi</h3>
+            <ul>
+                <li>Dalam Properties Media, <strong>Untick</strong> "Restart playback when source becomes active".</li>
+                <li>Tanda <strong>Loop</strong> jika mahu video berulang.</li>
+                <li>Tanda <strong>Close file when inactive</strong> supaya audio berhenti bila video disembunyikan.</li>
+            </ul>
+        </section>
+
+        <!-- TOPIK 7 -->
+        <section id="bug" class="content-section">
+            <h1>7. Isu OBS Versi 33 (Bug Audio)</h1>
+            <p>OBS versi 33.0.1 mempunyai isu <strong>Audio Monitoring</strong> yang tidak berfungsi dengan baik. Bunyi kadang-kadang hilang walaupun sudah diaktifkan.</p>
+            <h3>Cara Mengatasi:</h3>
+            <ul>
+                <li><strong>Matikan Desktop Audio:</strong> Pergi ke <strong>Settings > Audio</strong> dan tukar <strong>Desktop Audio</strong> kepada <strong>Disabled</strong>. Ini sering menyelesaikan masalah bunyi tersekat.</li>
+                <li><strong>Gunakan Audio Output Capture:</strong> Jika Media Source tidak berbunyi, tambah sumber baharu <strong>Audio Output Capture</strong> dan mainkan video melalui pemain video (VLC/Windows Media Player).</li>
+                <li><strong>Downgrade OBS:</strong> Jika masih gagal, pasang semula OBS versi 31 (versi stabil) di atas versi 33. Tetapan asal tidak akan hilang.</li>
+            </ul>
+            <div class="bug-warning">
+                <strong>Jangan Panik:</strong> Jika bunyi tidak keluar di Preview, ia adalah normal. Bunyi hanya akan keluar apabila Tuan menekan Transition ke Program (dalam Studio Mode).
+            </div>
+        </section>
+
+        <!-- TOPIK 8 -->
+        <section id="tips" class="content-section">
+            <h1>8. Tips Bertugas di Masjid</h1>
+            <ul>
+                <li><strong>Ujian Awal:</strong> Sebelum Live, buat "Test Stream" atau "Start Recording". Pastikan audio Mic bergerak (warna hijau) dan video tidak kuning.</li>
+                <li><strong>Tetapan Warna:</strong> Jika video kekuningan, klik kanan pada Kamera > Filters > Color Correction. Laraskan <strong>Saturation</strong> atau <strong>Gamma</strong>.</li>
+                <li><strong>Jangan Sentuh OBS Semasa Live:</strong> Jika tidak perlu, jangan ubah tetapan semasa siaran berjalan untuk mengelakkan gangguan.</li>
+                <li><strong>Gunakan Fon Kepala:</strong> Untuk mendengar bunyi video tanpa mengganggu jemaah di masjid, gunakan fon kepala yang disambungkan ke laptop.</li>
+                <li><strong>Simpan Tetapan (Export):</strong> Pergi ke <strong>Profile > Export</strong> dan simpan fail tetapan. Jika OBS rosak, Tuan boleh <strong>Import</strong> semula.</li>
+            </ul>
+            <div class="highlight">
+                <strong>Pesan Akhir:</strong> Tuan adalah wira di sebalik tabir masjid. Dengan kemahiran OBS ini, dakwah dapat disebarkan dengan lebih profesional. Teruskan belajar!
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Fungsi untuk tukar kandungan
+        function showSection(sectionId, btnElement) {
+            // Sembunyikan semua section
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(sec => sec.classList.remove('active'));
+
+            // Tunjuk section yang dipilih
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // Kemas kini status butang menu
+            const buttons = document.querySelectorAll('.menu-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            if(btnElement) {
+                btnElement.classList.add('active');
+            }
+
+            // Tutup sidebar di mobile selepas klik
+            if(window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+            
+            // Scroll ke atas
+            document.getElementById('main-content').scrollTop = 0;
+        }
+
+        // Fungsi untuk buka/tutup sidebar di mobile
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
