@@ -93,10 +93,9 @@
             #menu-toggle { display: block; }
         }
 
-        /* KELAS UNTUK KAWAL BAHASA */
-        .en-text { display: none !important; }
-        .my-text { display: block; }
-        span.my-text, span.en-text { display: inline !important; }
+        /* KELAS KAWALAN BAHASA (TANPA !important) */
+        .hidden { display: none; }
+        span.hidden { display: none; }
     </style>
 </head>
 <body>
@@ -114,266 +113,234 @@
         
         <button class="menu-btn active" onclick="tukarSkrin('intro', this)">
             <span class="my-text">1. Pengenalan & Asas</span>
-            <span class="en-text">1. Intro & Basics</span>
+            <span class="en-text hidden">1. Intro & Basics</span>
         </button>
         <button class="menu-btn" onclick="tukarSkrin('scene', this)">
             <span class="my-text">2. Konsep Scene & Source</span>
-            <span class="en-text">2. Scene & Source</span>
+            <span class="en-text hidden">2. Scene & Source</span>
         </button>
         <button class="menu-btn" onclick="tukarSkrin('setup', this)">
             <span class="my-text">3. Panduan Setup</span>
-            <span class="en-text">3. Setup Guide</span>
+            <span class="en-text hidden">3. Setup Guide</span>
         </button>
         <button class="menu-btn" onclick="tukarSkrin('audio', this)">
             <span class="my-text">4. Rahsia Audio</span>
-            <span class="en-text">4. Audio Secrets</span>
+            <span class="en-text hidden">4. Audio Secrets</span>
         </button>
         <button class="menu-btn" onclick="tukarSkrin('studio', this)">
             <span class="my-text">5. Studio Mode</span>
-            <span class="en-text">5. Studio Mode</span>
+            <span class="en-text hidden">5. Studio Mode</span>
         </button>
         <button class="menu-btn" onclick="tukarSkrin('media', this)">
             <span class="my-text">6. Sumber Media</span>
-            <span class="en-text">6. Media Sources</span>
+            <span class="en-text hidden">6. Media Sources</span>
         </button>
         <button class="menu-btn" onclick="tukarSkrin('bug', this)">
             <span class="my-text">7. Isu OBS v33</span>
-            <span class="en-text">7. OBS v33 Bugs</span>
+            <span class="en-text hidden">7. OBS v33 Bugs</span>
         </button>
         <button class="menu-btn" onclick="tukarSkrin('tips', this)">
             <span class="my-text">8. Tips Bertugas</span>
-            <span class="en-text">8. Duty Tips</span>
+            <span class="en-text hidden">8. Duty Tips</span>
         </button>
     </nav>
 
     <main id="main-content">
 
-        <!-- TOPIK 1 -->
         <section id="intro" class="content-section active">
             <h1>
                 <span class="my-text">1. Pengenalan & Asas OBS</span>
-                <span class="en-text">1. Intro & OBS Basics</span>
+                <span class="en-text hidden">1. Intro & OBS Basics</span>
             </h1>
             
             <p class="my-text">Selamat datang ke panduan OBS Studio untuk Masjid. OBS adalah perisian percuma untuk siaran langsung ke Facebook atau YouTube.</p>
-            <p class="en-text">Welcome to the OBS Studio guide for the Mosque. OBS is free software for live streaming to Facebook or YouTube.</p>
+            <p class="en-text hidden">Welcome to the OBS Studio guide for the Mosque. OBS is free software for live streaming to Facebook or YouTube.</p>
             
-            <h3><span class="my-text">Perkara Penting:</span><span class="en-text">Key Points:</span></h3>
+            <h3><span class="my-text">Perkara Penting:</span><span class="en-text hidden">Key Points:</span></h3>
             <ul>
                 <li>
                     <span class="my-text">OBS memisahkan antara <strong>Preview</strong> (apa yang kita lihat) dan <strong>Program</strong> (apa yang penonton lihat).</span>
-                    <span class="en-text">OBS separates <strong>Preview</strong> (what we see) and <strong>Program</strong> (what viewers see).</span>
+                    <span class="en-text hidden">OBS separates <strong>Preview</strong> (what we see) and <strong>Program</strong> (what viewers see).</span>
                 </li>
                 <li>
                     <span class="my-text">Gunakan <strong>OBS Studio 31</strong> jika boleh, kerana versi 33.0.1 mempunyai isu audio.</span>
-                    <span class="en-text">Use <strong>OBS Studio 31</strong> if possible, as version 33.0.1 has audio bugs.</span>
+                    <span class="en-text hidden">Use <strong>OBS Studio 31</strong> if possible, as version 33.0.1 has audio bugs.</span>
                 </li>
             </ul>
             
             <div class="note">
                 <span class="my-text"><strong>Nota:</strong> Jangan takut untuk mencuba. Ramai juruteknik bermula dari kosong.</span>
-                <span class="en-text"><strong>Note:</strong> Don't be afraid to try. Many technicians start from scratch.</span>
+                <span class="en-text hidden"><strong>Note:</strong> Don't be afraid to try. Many technicians start from scratch.</span>
             </div>
         </section>
 
-        <!-- TOPIK 2 -->
         <section id="scene" class="content-section">
-            <h1><span class="my-text">2. Konsep Scene & Source</span><span class="en-text">2. Scene & Source Concept</span></h1>
+            <h1><span class="my-text">2. Konsep Scene & Source</span><span class="en-text hidden">2. Scene & Source Concept</span></h1>
             <ul>
                 <li>
                     <span class="my-text"><strong>Scene (Panggung):</strong> Bekas untuk menyusun paparan. Contoh: "Scene Ceramah", "Scene Iklan".</span>
-                    <span class="en-text"><strong>Scene (Stage):</strong> Container to arrange displays. E.g., "Lecture Scene", "Ad Scene".</span>
+                    <span class="en-text hidden"><strong>Scene (Stage):</strong> Container to arrange displays. E.g., "Lecture Scene", "Ad Scene".</span>
                 </li>
                 <li>
                     <span class="my-text"><strong>Source (Barang):</strong> Bahan dalam Scene. Contoh: Kamera, Gambar, Audio.</span>
-                    <span class="en-text"><strong>Source (Item):</strong> Materials in the Scene. E.g., Camera, Image, Audio.</span>
+                    <span class="en-text hidden"><strong>Source (Item):</strong> Materials in the Scene. E.g., Camera, Image, Audio.</span>
                 </li>
             </ul>
             <div class="highlight">
                 <span class="my-text"><strong>Penting:</strong> Jika Tuan memadam (Delete) Source, ia hilang dari semua Scene. Sembunyikan dengan ikon <strong>Mata</strong> sahaja.</span>
-                <span class="en-text"><strong>Important:</strong> If you Delete a Source, it disappears from all Scenes. Just hide it using the <strong>Eye</strong> icon.</span>
+                <span class="en-text hidden"><strong>Important:</strong> If you Delete a Source, it disappears from all Scenes. Just hide it using the <strong>Eye</strong> icon.</span>
             </div>
         </section>
 
-        <!-- TOPIK 3 -->
         <section id="setup" class="content-section">
-            <h1><span class="my-text">3. Panduan Setup Asas</span><span class="en-text">3. Basic Setup Checklist</span></h1>
+            <h1><span class="my-text">3. Panduan Setup Asas</span><span class="en-text hidden">3. Basic Setup Checklist</span></h1>
             <ol>
-                <li><span class="my-text"><strong>Kamera:</strong> Klik <code>+</code> > <strong>Video Capture Device</strong>.</span><span class="en-text"><strong>Camera:</strong> Click <code>+</code> > <strong>Video Capture Device</strong>.</span></li>
-                <li><span class="my-text"><strong>Mikrofon:</strong> Klik <code>+</code> > <strong>Audio Input Capture</strong>.</span><span class="en-text"><strong>Microphone:</strong> Click <code>+</code> > <strong>Audio Input Capture</strong>.</span></li>
-                <li><span class="my-text"><strong>Suara Komputer:</strong> Klik <code>+</code> > <strong>Audio Output Capture</strong>.</span><span class="en-text"><strong>PC Sound:</strong> Click <code>+</code> > <strong>Audio Output Capture</strong>.</span></li>
-                <li><span class="my-text"><strong>Warna Kuning:</strong> Klik kanan Kamera > <strong>Filters</strong> > <strong>Color Correction</strong>.</span><span class="en-text"><strong>Yellowish Color:</strong> Right-click Camera > <strong>Filters</strong> > <strong>Color Correction</strong>.</span></li>
-                <li><span class="my-text"><strong>Facebook:</strong> Pergi ke <strong>Settings > Stream</strong> dan masukkan Stream Key.</span><span class="en-text"><strong>Facebook:</strong> Go to <strong>Settings > Stream</strong> and enter Stream Key.</span></li>
+                <li><span class="my-text"><strong>Kamera:</strong> Klik <code>+</code> > <strong>Video Capture Device</strong>.</span><span class="en-text hidden"><strong>Camera:</strong> Click <code>+</code> > <strong>Video Capture Device</strong>.</span></li>
+                <li><span class="my-text"><strong>Mikrofon:</strong> Klik <code>+</code> > <strong>Audio Input Capture</strong>.</span><span class="en-text hidden"><strong>Microphone:</strong> Click <code>+</code> > <strong>Audio Input Capture</strong>.</span></li>
+                <li><span class="my-text"><strong>Suara Komputer:</strong> Klik <code>+</code> > <strong>Audio Output Capture</strong>.</span><span class="en-text hidden"><strong>PC Sound:</strong> Click <code>+</code> > <strong>Audio Output Capture</strong>.</span></li>
+                <li><span class="my-text"><strong>Warna Kuning:</strong> Klik kanan Kamera > <strong>Filters</strong> > <strong>Color Correction</strong>.</span><span class="en-text hidden"><strong>Yellowish Color:</strong> Right-click Camera > <strong>Filters</strong> > <strong>Color Correction</strong>.</span></li>
+                <li><span class="my-text"><strong>Facebook:</strong> Pergi ke <strong>Settings > Stream</strong> dan masukkan Stream Key.</span><span class="en-text hidden"><strong>Facebook:</strong> Go to <strong>Settings > Stream</strong> and enter Stream Key.</span></li>
             </ol>
         </section>
 
-        <!-- TOPIK 4 -->
         <section id="audio" class="content-section">
-            <h1><span class="my-text">4. Rahsia Audio & Mute</span><span class="en-text">4. Audio & Mute Secrets</span></h1>
+            <h1><span class="my-text">4. Rahsia Audio & Mute</span><span class="en-text hidden">4. Audio & Mute Secrets</span></h1>
             <ul>
-                <li><span class="my-text"><strong>Butang Mute (Speaker):</strong> Menyekat bunyi ke siaran Facebook.</span><span class="en-text"><strong>Mute Button (Speaker):</strong> Blocks sound to Facebook broadcast.</span></li>
-                <li><span class="my-text"><strong>Butang Monitoring (Fon Kepala):</strong> Benarkan Tuan dengar di pembesar suara laptop.</span><span class="en-text"><strong>Monitoring Button (Headphone):</strong> Allows you to hear on laptop speakers.</span></li>
+                <li><span class="my-text"><strong>Butang Mute (Speaker):</strong> Menyekat bunyi ke siaran Facebook.</span><span class="en-text hidden"><strong>Mute Button (Speaker):</strong> Blocks sound to Facebook broadcast.</span></li>
+                <li><span class="my-text"><strong>Butang Monitoring (Fon Kepala):</strong> Benarkan Tuan dengar di pembesar suara laptop.</span><span class="en-text hidden"><strong>Monitoring Button (Headphone):</strong> Allows you to hear on laptop speakers.</span></li>
             </ul>
             <div class="bug-warning">
                 <span class="my-text"><strong>Amaran:</strong> Jangan tandakan "Enable" untuk "Video Capture Device" di Advanced Audio Properties (elak echo).</span>
-                <span class="en-text"><strong>Warning:</strong> Don't tick "Enable" for "Video Capture Device" in Advanced Audio Properties (avoid echo).</span>
+                <span class="en-text hidden"><strong>Warning:</strong> Don't tick "Enable" for "Video Capture Device" in Advanced Audio Properties (avoid echo).</span>
             </div>
         </section>
 
-        <!-- TOPIK 5 -->
         <section id="studio" class="content-section">
-            <h1><span class="my-text">5. Kuasai Studio Mode</span><span class="en-text">5. Mastering Studio Mode</span></h1>
+            <h1><span class="my-text">5. Kuasai Studio Mode</span><span class="en-text hidden">5. Mastering Studio Mode</span></h1>
             <ul>
-                <li><span class="my-text"><strong>Preview (Kiri):</strong> Sediakan bahan. Audio <strong>TIDAK KELUAR</strong> di sini.</span><span class="en-text"><strong>Preview (Left):</strong> Prepare materials. Audio <strong>DOES NOT PLAY</strong> here.</span></li>
-                <li><span class="my-text"><strong>Program (Kanan):</strong> Siaran sebenar. Penonton lihat ini.</span><span class="en-text"><strong>Program (Right):</strong> Actual broadcast. Viewers see this.</span></li>
-                <li><span class="my-text"><strong>Transition (Tengah):</strong> Butang untuk pindah dari Preview ke Program.</span><span class="en-text"><strong>Transition (Center):</strong> Button to move from Preview to Program.</span></li>
+                <li><span class="my-text"><strong>Preview (Kiri):</strong> Sediakan bahan. Audio <strong>TIDAK KELUAR</strong> di sini.</span><span class="en-text hidden"><strong>Preview (Left):</strong> Prepare materials. Audio <strong>DOES NOT PLAY</strong> here.</span></li>
+                <li><span class="my-text"><strong>Program (Kanan):</strong> Siaran sebenar. Penonton lihat ini.</span><span class="en-text hidden"><strong>Program (Right):</strong> Actual broadcast. Viewers see this.</span></li>
+                <li><span class="my-text"><strong>Transition (Tengah):</strong> Butang untuk pindah dari Preview ke Program.</span><span class="en-text hidden"><strong>Transition (Center):</strong> Button to move from Preview to Program.</span></li>
             </ul>
             <div class="highlight">
                 <span class="my-text"><strong>Tip:</strong> Nak stop video? Pilih Scene lain di Preview, tekan <strong>Transition</strong>.</span>
-                <span class="en-text"><strong>Tip:</strong> Want to stop a video? Select another Scene in Preview, press <strong>Transition</strong>.</span>
+                <span class="en-text hidden"><strong>Tip:</strong> Want to stop a video? Select another Scene in Preview, press <strong>Transition</strong>.</span>
             </div>
         </section>
 
-        <!-- TOPIK 6 -->
         <section id="media" class="content-section">
-            <h1><span class="my-text">6. Masalah Sumber Media</span><span class="en-text">6. Media Source Issues</span></h1>
-            <h3><span class="my-text">Gambar Skrin Hitam?</span><span class="en-text">Image Black Screen?</span></h3>
+            <h1><span class="my-text">6. Masalah Sumber Media</span><span class="en-text hidden">6. Media Source Issues</span></h1>
+            <h3><span class="my-text">Gambar Skrin Hitam?</span><span class="en-text hidden">Image Black Screen?</span></h3>
             <ul>
-                <li><span class="my-text">Guna <strong>Image Source</strong> (bukan Media Source) untuk fail JPG/PNG.</span><span class="en-text">Use <strong>Image Source</strong> (not Media Source) for JPG/PNG files.</span></li>
-                <li><span class="my-text">Jangan simpan gambar dalam folder OneDrive.</span><span class="en-text">Don't store images in OneDrive folders.</span></li>
+                <li><span class="my-text">Guna <strong>Image Source</strong> (bukan Media Source) untuk fail JPG/PNG.</span><span class="en-text hidden">Use <strong>Image Source</strong> (not Media Source) for JPG/PNG files.</span></li>
+                <li><span class="my-text">Jangan simpan gambar dalam folder OneDrive.</span><span class="en-text hidden">Don't store images in OneDrive folders.</span></li>
             </ul>
-            <h3><span class="my-text">Video Tiada Bunyi?</span><span class="en-text">Video No Sound?</span></h3>
+            <h3><span class="my-text">Video Tiada Bunyi?</span><span class="en-text hidden">Video No Sound?</span></h3>
             <ul>
-                <li><span class="my-text"><strong>Untick</strong> "Restart playback when source becomes active".</span><span class="en-text"><strong>Untick</strong> "Restart playback when source becomes active".</span></li>
-                <li><span class="my-text">Tanda <strong>Loop</strong> untuk ulang video.</span><span class="en-text">Tick <strong>Loop</strong> to repeat video.</span></li>
+                <li><span class="my-text"><strong>Untick</strong> "Restart playback when source becomes active".</span><span class="en-text hidden"><strong>Untick</strong> "Restart playback when source becomes active".</span></li>
+                <li><span class="my-text">Tanda <strong>Loop</strong> untuk ulang video.</span><span class="en-text hidden">Tick <strong>Loop</strong> to repeat video.</span></li>
             </ul>
         </section>
 
-        <!-- TOPIK 7 -->
         <section id="bug" class="content-section">
-            <h1><span class="my-text">7. Isu OBS Versi 33</span><span class="en-text">7. OBS v33 Bug Issues</span></h1>
+            <h1><span class="my-text">7. Isu OBS Versi 33</span><span class="en-text hidden">7. OBS v33 Bug Issues</span></h1>
             <p class="my-text">OBS versi 33.0.1 ada isu <strong>Audio Monitoring</strong> tak berfungsi.</p>
-            <p class="en-text">OBS version 33.0.1 has a <strong>non-functioning Audio Monitoring</strong> issue.</p>
-            <h3><span class="my-text">Cara Baiki:</span><span class="en-text">How to Fix:</span></h3>
+            <p class="en-text hidden">OBS version 33.0.1 has a <strong>non-functioning Audio Monitoring</strong> issue.</p>
+            <h3><span class="my-text">Cara Baiki:</span><span class="en-text hidden">How to Fix:</span></h3>
             <ul>
-                <li><span class="my-text"><strong>Matikan Desktop Audio:</strong> Pergi <strong>Settings > Audio</strong>, tukar ke <strong>Disabled</strong>.</span><span class="en-text"><strong>Disable Desktop Audio:</strong> Go <strong>Settings > Audio</strong>, change to <strong>Disabled</strong>.</span></li>
-                <li><span class="my-text"><strong>Downgrade OBS:</strong> Pasang semula OBS versi 31.</span><span class="en-text"><strong>Downgrade OBS:</strong> Reinstall OBS version 31.</span></li>
+                <li><span class="my-text"><strong>Matikan Desktop Audio:</strong> Pergi <strong>Settings > Audio</strong>, tukar ke <strong>Disabled</strong>.</span><span class="en-text hidden"><strong>Disable Desktop Audio:</strong> Go <strong>Settings > Audio</strong>, change to <strong>Disabled</strong>.</span></li>
+                <li><span class="my-text"><strong>Downgrade OBS:</strong> Pasang semula OBS versi 31.</span><span class="en-text hidden"><strong>Downgrade OBS:</strong> Reinstall OBS version 31.</span></li>
             </ul>
             <div class="bug-warning">
                 <span class="my-text"><strong>Normal:</strong> Bunyi tak keluar di Preview. Ia hanya keluar bila tekan <strong>Transition</strong> ke Program.</span>
-                <span class="en-text"><strong>Normal:</strong> No sound in Preview. It only plays when you press <strong>Transition</strong> to Program.</span>
+                <span class="en-text hidden"><strong>Normal:</strong> No sound in Preview. It only plays when you press <strong>Transition</strong> to Program.</span>
             </div>
         </section>
 
-        <!-- TOPIK 8 -->
         <section id="tips" class="content-section">
-            <h1><span class="my-text">8. Tips Bertugas</span><span class="en-text">8. Duty Tips</span></h1>
+            <h1><span class="my-text">8. Tips Bertugas</span><span class="en-text hidden">8. Duty Tips</span></h1>
             <ul>
-                <li><span class="my-text"><strong>Ujian Awal:</strong> Buat "Test Stream" untuk pastikan Mic dan Kamera berfungsi.</span><span class="en-text"><strong>Early Test:</strong> Do a "Test Stream" to ensure Mic and Camera work.</span></li>
-                <li><span class="my-text"><strong>Jangan Sentuh OBS:</strong> Semasa Live, elak ubah tetapan.</span><span class="en-text"><strong>Don't Touch OBS:</strong> During Live, avoid changing settings.</span></li>
-                <li><span class="my-text"><strong>Simpan Tetapan:</strong> Pergi <strong>Profile > Export</strong> untuk backup.</span><span class="en-text"><strong>Save Settings:</strong> Go <strong>Profile > Export</strong> for backup.</span></li>
+                <li><span class="my-text"><strong>Ujian Awal:</strong> Buat "Test Stream" untuk pastikan Mic dan Kamera berfungsi.</span><span class="en-text hidden"><strong>Early Test:</strong> Do a "Test Stream" to ensure Mic and Camera work.</span></li>
+                <li><span class="my-text"><strong>Jangan Sentuh OBS:</strong> Semasa Live, elak ubah tetapan.</span><span class="en-text hidden"><strong>Don't Touch OBS:</strong> During Live, avoid changing settings.</span></li>
+                <li><span class="my-text"><strong>Simpan Tetapan:</strong> Pergi <strong>Profile > Export</strong> untuk backup.</span><span class="en-text hidden"><strong>Save Settings:</strong> Go <strong>Profile > Export</strong> for backup.</span></li>
             </ul>
             <div class="highlight">
                 <span class="my-text"><strong>Pesan Akhir:</strong> Tuan adalah wira di sebalik tabir masjid!</span>
-                <span class="en-text"><strong>Final Note:</strong> You are the hero behind the scenes of the mosque!</span>
+                <span class="en-text hidden"><strong>Final Note:</strong> You are the hero behind the scenes of the mosque!</span>
             </div>
         </section>
 
     </main>
 
     <script>
-        // Fungsi Tukar Bahasa Menggunakan Kaedah Asas (Paling Stabil)
+        // Fungsi Tukar Bahasa (Versi Kemas Kini)
         function tukarBahasa(lang) {
-            var i;
-            // Sembunyikan semua teks Melayu
+            // Ambil semua elemen yang ada kelas my-text dan en-text
             var myTexts = document.getElementsByClassName('my-text');
-            for (i = 0; i < myTexts.length; i++) {
-                myTexts[i].style.display = 'none';
-            }
-            // Sembunyikan semua teks Inggeris
             var enTexts = document.getElementsByClassName('en-text');
-            for (i = 0; i < enTexts.length; i++) {
-                enTexts[i].style.display = 'none';
-            }
 
-            // Tunjuk teks mengikut bahasa yang dipilih
+            // Jika pilih Melayu
             if (lang === 'my') {
-                for (i = 0; i < myTexts.length; i++) {
-                    // Jika ia adalah elemen SPAN, tunjuk sebagai inline
-                    if (myTexts[i].tagName === 'SPAN') {
-                        myTexts[i].style.display = 'inline';
-                    } else {
-                        myTexts[i].style.display = 'block';
-                    }
+                // Tunjuk semua Melayu (buang kelas 'hidden')
+                for (var i = 0; i < myTexts.length; i++) {
+                    myTexts[i].classList.remove('hidden');
                 }
-                document.getElementById('btn-my').className = 'active';
-                document.getElementById('btn-en').className = '';
-            } else {
-                for (i = 0; i < enTexts.length; i++) {
-                    if (enTexts[i].tagName === 'SPAN') {
-                        enTexts[i].style.display = 'inline';
-                    } else {
-                        enTexts[i].style.display = 'block';
-                    }
+                // Sembunyikan semua Inggeris (tambah kelas 'hidden')
+                for (var i = 0; i < enTexts.length; i++) {
+                    enTexts[i].classList.add('hidden');
                 }
-                document.getElementById('btn-en').className = 'active';
-                document.getElementById('btn-my').className = '';
+                // Kemas kini warna butang
+                document.getElementById('btn-my').classList.add('active');
+                document.getElementById('btn-en').classList.remove('active');
+            } 
+            // Jika pilih Inggeris
+            else {
+                for (var i = 0; i < enTexts.length; i++) {
+                    enTexts[i].classList.remove('hidden');
+                }
+                for (var i = 0; i < myTexts.length; i++) {
+                    myTexts[i].classList.add('hidden');
+                }
+                document.getElementById('btn-en').classList.add('active');
+                document.getElementById('btn-my').classList.remove('active');
             }
         }
 
-        // Fungsi Navigasi Menu (Tukar Kandungan)
+        // Fungsi Navigasi Menu
         function tukarSkrin(sectionId, btnElement) {
-            var i;
-            // Sembunyikan semua section
             var sections = document.getElementsByClassName('content-section');
-            for (i = 0; i < sections.length; i++) {
-                sections[i].style.display = 'none';
-                sections[i].className = 'content-section';
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
             }
 
-            // Tunjuk section yang dipilih
             var target = document.getElementById(sectionId);
             if (target) {
-                target.style.display = 'block';
-                target.className = 'content-section active';
+                target.classList.add('active');
             }
 
-            // Tukar status butang menu
             var buttons = document.getElementsByClassName('menu-btn');
-            for (i = 0; i < buttons.length; i++) {
-                buttons[i].className = 'menu-btn';
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
             }
             if (btnElement) {
-                btnElement.className = 'menu-btn active';
+                btnElement.classList.add('active');
             }
 
-            // Tutup menu di telefon
             if (window.innerWidth <= 768) {
-                document.getElementById('sidebar').className = '';
+                document.getElementById('sidebar').classList.remove('open');
             }
-            // Skrol ke atas
             document.getElementById('main-content').scrollTop = 0;
         }
 
         // Butang Menu Telefon
         document.getElementById('menu-toggle').onclick = function() {
             var side = document.getElementById('sidebar');
-            if (side.className === 'open') {
-                side.className = '';
-            } else {
-                side.className = 'open';
-            }
+            side.classList.toggle('open');
         };
 
         // Set Bahasa Melayu sebagai default bila halaman dibuka
         window.onload = function() {
             tukarBahasa('my');
-            // Pastikan hanya section pertama yang aktif pada awalnya
-            var sections = document.getElementsByClassName('content-section');
-            for (var i = 0; i < sections.length; i++) {
-                sections[i].style.display = 'none';
-            }
-            document.getElementById('intro').style.display = 'block';
         };
     </script>
 </body>
